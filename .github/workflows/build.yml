@@ -1,0 +1,36 @@
+name: UMAR X1 APK
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git zip unzip \
+            autoconf libtool pkg-config cmake \
+            libffi-dev libssl-dev build-essential
+      - name: Install Buildozer
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          pip install buildozer cython==0.29.33
+      - name: Build APK
+        run: buildozer -v android debug
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: UMAR-X1-APK
+          path: bin/*.apk
+          if-no-files-found: error0
+
