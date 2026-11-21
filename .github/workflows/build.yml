@@ -32,5 +32,5 @@ jobs:
         with:
           name: UMAR-X1-APK
           path: bin/*.apk
-          if-no-files-found: error0
+          if-no-files-found: error
 
